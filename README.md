@@ -52,5 +52,232 @@ By making notes ahead of time, you will practice the core skill of being able to
 ## Api Reference
 
 ### Introduction: 
-This api allow users to create trivia games by retrieving and creating questions associated to categories. 
+This API follow the RESTFUL principles, and allow users to create trivia games by retrieving and creating questions associated to categories. You can interact with the trivia postgresql database accesing category and questions database tables and perform CRUD operations in those.
+
+### Getting Started
+
+* Base Url: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, http://127.0.0.1:5000/, wich is set as a proxy in the frontend configuration.
+
+* Authentication: This version of the application does not require authentication or 
+API keys.
+
+### Methods
+
+### Error Handling
+Errors are returned as JSON objects in the following format
+
+{
+  'success':False, 
+  'error':'404', 
+  'message':'Page not found'
+}
+
+The API will return three error types when request fail:
+  * 400: Bad querest
+  * 404: Resource not found
+  * 422: Unprocessable
+
+### Endpoints
+GET /categories
+* General:
+ * * Return a dictionary of category objects and succes value.
+ 
+ * * Sample request: 
+  curl http://127.0.0.1:5000/categories
+  
+  * Response sample
+  {
+    "categories": {
+      "1": "Science",
+      "2": "Art",
+      "3": "Geography",
+      "4": "History",
+      "5": "Entertainment",
+      "6": "Sports"
+    },
+    "success": true
+  }
+
+GET /categories/{category_id}/questions
+* General
+  * * Returns a list of paginated list of questions objects, success value, total questions, and current category
+  
+  * * Sample request: curl http://127.0.0.1:5000/categories/2/questions
+  
+  * * Response Sample: 
+  {
+  "current_category": "2",
+  "questions": [
+    {
+      "answer": "Escher",
+      "category": 2,
+      "difficulty": 1,
+      "id": 16,
+      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
+    },
+    {
+      "answer": "Mona Lisa",
+      "category": 2,
+      "difficulty": 3,
+      "id": 17,
+      "question": "La Giaconda is better known as what?"
+    },
+    {
+      "answer": "One",
+      "category": 2,
+      "difficulty": 4,
+      "id": 18,
+      "question": "How many paintings did Van Gogh sell in his lifetime?"
+    },
+    {
+      "answer": "Jackson Pollock",
+      "category": 2,
+      "difficulty": 2,
+      "id": 19,
+      "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
+    }
+  ],
+  "success": true,
+  "total_questions": 4
+} 
+
+GET /questions
+* General:
+  * * Returns a list of paginated questions objects, succes value, categories dictionary, total questions, and the current category
+
+  * * Sample request: 
+    curl http://127.0.0.1:5000/questions 
+    curl http://127.0.0.1:5000/questions?page=2
+
+* Response sample
+"current_category": 3,
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    },
+    {
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+  "total_questions": 19
+}
+
+POST /questions/search
+* General: This endpoit retrieve a questions object list, success value, and total question.
+
+* Sample request:  curl -X POST -H "Content-Type: application/json" -d '{"searchTerm":"title"}' http://127.0.0.1:5000/questions/search
+
+* Sample response:
+"questions": [
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    }
+  ],
+  "success": true,
+  "total_questions": 2
+}
+
+POST /questions
+
+* General: This endpoint allow to create a new question record in the questions table, and retrieves just success value.
+
+* Sample request: curl http://127.0.0.1:5000/questions -X POST -H "Content-Type:application/json" -d '{"question":"The biggest mountain in the world","answer":"Mount Everest","difficulty":1,"category":"3"}'
+
+* Sample response: 
+{
+  "success": true
+}
+
+POST /quizzes
+* General: This endpoint retrieve a list of question objects, and success value.
+
+* Sample request: curl -X POST "http://127.0.0.1:5000/quizzes" -d "{\"quiz_category\":{\"type\": \"History\", \"id\": \"4\"},\"previous_questions\":[4]}" -H "Content-Type: application/json"
+
+* Sample Response
+{
+  "question": {
+    "answer": "Maya Angelou",
+    "category": 4,
+    "difficulty": 2,
+    "id": 5,
+    "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+  },
+  "success": true
+}
 
