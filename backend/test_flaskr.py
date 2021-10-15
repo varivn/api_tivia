@@ -148,4 +148,4 @@ class TriviaTestCase(unittest.TestCase):
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
-    unittest.main()
+  unittest.main()
