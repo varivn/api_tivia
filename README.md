@@ -1,6 +1,5 @@
 # Full Stack API Final Project
 
-
 ## Full Stack Trivia
 
 Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out.
@@ -61,23 +60,9 @@ This API follow the RESTFUL principles, and allow users to create trivia games b
 * Authentication: This version of the application does not require authentication or 
 API keys.
 
-### Methods
+## Methods
 
-### Error Handling
-Errors are returned as JSON objects in the following format
-
-{
-  'success':False, 
-  'error':'404', 
-  'message':'Page not found'
-}
-
-The API will return three error types when request fail:
-  * 400: Bad querest
-  * 404: Resource not found
-  * 422: Unprocessable
-
-### Endpoints
+* ### Endpoints
 GET /categories
 * General:
  * * Return a dictionary of category objects and succes value.
@@ -281,3 +266,16 @@ POST /quizzes
   "success": true
 }
 
+### Error Handling
+Errors are returned as JSON objects in the following format
+
+{
+  'success':False, 
+  'error':'404', 
+  'message':'Page not found'
+}
+
+The API will return three error types when request fail:
+  * 400: Bad querest
+  * 404: Resource not found
+  * 422: Unprocessable
